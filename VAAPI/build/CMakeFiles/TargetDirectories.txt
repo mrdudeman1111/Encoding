@@ -1,0 +1,3 @@
+/home/ethanw/Repos/enc/OpenGL/VAAPI/build/CMakeFiles/Enc.dir
+/home/ethanw/Repos/enc/OpenGL/VAAPI/build/CMakeFiles/edit_cache.dir
+/home/ethanw/Repos/enc/OpenGL/VAAPI/build/CMakeFiles/rebuild_cache.dir
