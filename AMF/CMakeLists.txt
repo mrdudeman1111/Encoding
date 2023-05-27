@@ -14,3 +14,4 @@ find_package(GLEW REQUIRED)
 add_executable(glenc ${SOURCES})
 
 target_link_libraries(glenc OpenGL glm glfw)
+

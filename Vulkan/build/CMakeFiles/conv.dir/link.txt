@@ -1,0 +1,1 @@
+/usr/bin/g++ -g CMakeFiles/conv.dir/main.cpp.o -o conv  -lvulkan 

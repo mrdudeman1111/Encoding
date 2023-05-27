@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/mnt/sda3/Repos/enc/VAAPI/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/Enc.dir/main.cpp.o -c /mnt/sda3/Repos/enc/VAAPI/main.cpp",
+  "file": "/mnt/sda3/Repos/enc/VAAPI/main.cpp",
+  "output": "CMakeFiles/Enc.dir/main.cpp.o"
+},
+{
+  "directory": "/mnt/sda3/Repos/enc/VAAPI/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/Query.dir/Query.cpp.o -c /mnt/sda3/Repos/enc/VAAPI/Query.cpp",
+  "file": "/mnt/sda3/Repos/enc/VAAPI/Query.cpp",
+  "output": "CMakeFiles/Query.dir/Query.cpp.o"
+}
+]

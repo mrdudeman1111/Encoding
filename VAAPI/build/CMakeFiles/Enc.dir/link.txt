@@ -1,1 +1,1 @@
-/usr/bin/c++ CMakeFiles/Enc.dir/main.cpp.o -o Enc  -lva 
+/usr/bin/g++ -g CMakeFiles/Enc.dir/main.cpp.o -o Enc  -lva -lva-drm 

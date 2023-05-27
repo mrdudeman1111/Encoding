@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ethanw/Repos/enc/OpenGL/VAAPI
+CMAKE_SOURCE_DIR = /mnt/sda3/Repos/enc/VAAPI
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ethanw/Repos/enc/OpenGL/VAAPI/build
+CMAKE_BINARY_DIR = /mnt/sda3/Repos/enc/VAAPI/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ethanw/Repos/enc/OpenGL/VAAPI/build/CMakeFiles /home/ethanw/Repos/enc/OpenGL/VAAPI/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/sda3/Repos/enc/VAAPI/build/CMakeFiles /mnt/sda3/Repos/enc/VAAPI/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ethanw/Repos/enc/OpenGL/VAAPI/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/sda3/Repos/enc/VAAPI/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -129,6 +129,43 @@ Enc/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Enc.dir/build.make CMakeFiles/Enc.dir/build
 .PHONY : Enc/fast
 
+#=============================================================================
+# Target rules for targets named Query
+
+# Build rule for target.
+Query: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Query
+.PHONY : Query
+
+# fast build rule for target.
+Query/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Query.dir/build.make CMakeFiles/Query.dir/build
+.PHONY : Query/fast
+
+Query.o: Query.cpp.o
+.PHONY : Query.o
+
+# target to build an object file
+Query.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Query.dir/build.make CMakeFiles/Query.dir/Query.cpp.o
+.PHONY : Query.cpp.o
+
+Query.i: Query.cpp.i
+.PHONY : Query.i
+
+# target to preprocess a source file
+Query.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Query.dir/build.make CMakeFiles/Query.dir/Query.cpp.i
+.PHONY : Query.cpp.i
+
+Query.s: Query.cpp.s
+.PHONY : Query.s
+
+# target to generate assembly for a file
+Query.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Query.dir/build.make CMakeFiles/Query.dir/Query.cpp.s
+.PHONY : Query.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -162,6 +199,10 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... Enc"
+	@echo "... Query"
+	@echo "... Query.o"
+	@echo "... Query.i"
+	@echo "... Query.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

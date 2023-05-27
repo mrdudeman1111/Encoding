@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/ethanw/Repos/enc/OpenGL/VAAPI/main.cpp" "CMakeFiles/Enc.dir/main.cpp.o" "gcc" "CMakeFiles/Enc.dir/main.cpp.o.d"
+  "/mnt/sda3/Repos/enc/VAAPI/main.cpp" "CMakeFiles/Enc.dir/main.cpp.o" "gcc" "CMakeFiles/Enc.dir/main.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

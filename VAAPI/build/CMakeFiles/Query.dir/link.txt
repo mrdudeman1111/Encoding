@@ -1,0 +1,1 @@
+/usr/bin/g++ -g CMakeFiles/Query.dir/Query.cpp.o -o Query  -lva -lva-drm 

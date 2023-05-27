@@ -1,0 +1,72 @@
+VAProfileMPEG2Simple
+  VAEntrypointVLD
+    YUV420
+    YUV422
+VAProfileMPEG2Main
+  VAEntrypointVLD
+    YUV420
+    YUV422
+VAProfileVC1Simple
+  VAEntrypointVLD
+    YUV420
+    YUV422
+VAProfileVC1Main
+  VAEntrypointVLD
+    YUV420
+    YUV422
+VAProfileVC1Advanced
+  VAEntrypointVLD
+    YUV420
+    YUV422
+VAProfileH264ConstrainedBaseline
+  VAEntrypointVLD
+    YUV420
+    YUV422
+  VAEntrypointEncSlice
+    YUV420
+VAProfileH264Main
+  VAEntrypointVLD
+    YUV420
+    YUV422
+  VAEntrypointEncSlice
+    YUV420
+VAProfileH264High
+  VAEntrypointVLD
+    YUV420
+    YUV422
+  VAEntrypointEncSlice
+    YUV420
+VAProfileHEVCMain
+  VAEntrypointVLD
+    YUV420
+    YUV422
+  VAEntrypointEncSlice
+    YUV420
+VAProfileHEVCMain10
+  VAEntrypointVLD
+    YUV420
+    YUV422
+  VAEntrypointEncSlice
+    YUV420
+VAProfileJPEGBaseline
+  VAEntrypointVLD
+    YUV420
+    YUV422
+    YUV400
+    YUV444
+VAProfileVP9Profile0
+  VAEntrypointVLD
+    YUV420
+    YUV422
+VAProfileVP9Profile2
+  VAEntrypointVLD
+    YUV420
+    YUV422
+VAProfileAV1Profile0
+  VAEntrypointVLD
+    YUV420
+    YUV422
+VAProfileNone
+  VAEntrypointVideoProc
+    YUV420
+    RGB32

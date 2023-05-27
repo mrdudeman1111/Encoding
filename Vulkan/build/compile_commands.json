@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/mnt/sda3/Repos/enc/Vulkan/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/conv.dir/main.cpp.o -c /mnt/sda3/Repos/enc/Vulkan/main.cpp",
+  "file": "/mnt/sda3/Repos/enc/Vulkan/main.cpp",
+  "output": "CMakeFiles/conv.dir/main.cpp.o"
+}
+]

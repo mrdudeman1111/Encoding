@@ -1,0 +1,3 @@
+/mnt/sda3/Repos/enc/Vulkan/build/CMakeFiles/conv.dir
+/mnt/sda3/Repos/enc/Vulkan/build/CMakeFiles/edit_cache.dir
+/mnt/sda3/Repos/enc/Vulkan/build/CMakeFiles/rebuild_cache.dir
