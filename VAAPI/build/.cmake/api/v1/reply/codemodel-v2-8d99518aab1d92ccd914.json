@@ -58,8 +58,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/mnt/sda3/Repos/enc/VAAPI/build",
-		"source" : "/mnt/sda3/Repos/enc/VAAPI"
+		"build" : "/run/media/LinuxGames/Repos/enc/VAAPI/build",
+		"source" : "/run/media/LinuxGames/Repos/enc/VAAPI"
 	},
 	"version" : 
 	{

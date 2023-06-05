@@ -1,4 +1,5 @@
-CMakeFiles/Query.dir/Query.cpp.o: /mnt/sda3/Repos/enc/VAAPI/Query.cpp \
+CMakeFiles/Query.dir/Query.cpp.o: \
+ /run/media/LinuxGames/Repos/enc/VAAPI/Query.cpp \
  /usr/include/stdc-predef.h /usr/include/fcntl.h /usr/include/features.h \
  /usr/include/features-time64.h /usr/include/bits/wordsize.h \
  /usr/include/bits/timesize.h /usr/include/sys/cdefs.h \

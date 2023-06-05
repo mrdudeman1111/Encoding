@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <pstl/glue_execution_defs.h>
 #include <vector>
 #include <string>
 
@@ -11,6 +10,9 @@
 #include <fcntl.h>
 #include <dlfcn.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb/stb_image.h>
+
 #include <va/va.h>
 #include <va/va_drm.h>
 #include <va/va_x11.h>
@@ -19,6 +21,33 @@
 int Width = 1920;
 int Height = 1080;
 int BitRate = 50000000;
+FILE* outFile;
+
+#define NAL_REF_IDC_NONE        0
+#define NAL_REF_IDC_LOW         1
+#define NAL_REF_IDC_MEDIUM      2
+#define NAL_REF_IDC_HIGH        3
+
+#define NAL_NON_IDR             1
+#define NAL_IDR                 5
+#define NAL_SPS                 7
+#define NAL_PPS                 8
+#define NAL_SEI                 6
+#define NAL_DELIMITER           9
+
+
+#define SLICE_TYPE_P            0
+#define SLICE_TYPE_B            1
+#define SLICE_TYPE_I            2
+
+#define FRAME_IDR 7
+
+#define ENTROPY_MODE_CAVLC      0
+#define ENTROPY_MODE_CABAC      1
+
+#define PROFILE_IDC_BASELINE    66
+#define PROFILE_IDC_MAIN        77
+#define PROFILE_IDC_HIGH        100
 
 std::string AttribString(int Var)
 {
@@ -150,6 +179,22 @@ std::string EPString(int Var)
   return "Error";
 }
 
+void FillSurface(VADisplay* Display, VASurfaceID* Surface)
+{
+  int Width, Height, Channels;
+  stbi_load("input.jpg", &Width, &Height, &Channels, STBI_rgb);
+
+  VAImage DstImage;
+
+  vaDeriveImage(*Display, *Surface, &DstImage);
+
+  void* SurfaceMemory;
+  vaMapBuffer(*Display, DstImage.buf, &SurfaceMemory);
+
+  void* Mem;
+  vaMapBuffer(*Display, *Surface, &Mem);
+}
+
 int main()
 {
   VADisplay MainDisplay;
@@ -158,7 +203,8 @@ int main()
   VAProfile Profile;
   VAEntrypoint EntryPoint;
 
-  VABufferID SeqPBuffer;
+  /* Setup output file */
+  outFile = fopen("Output.mp4", "wb");
 
   int DRM = open("/dev/dri/renderD128", O_RDWR);
 
@@ -204,14 +250,11 @@ int main()
 
   std::cout << "Chose " << ProfString(Profile) << " Profile with " << EPString(EntryPoint) << " EntryPoint\n";
 
-  std::vector<VAConfigAttrib> AvConfigAttrib(VAConfigAttribTypeMax);
+  std::vector<VAConfigAttrib> AvConfigAttrib(2);
   std::vector<VAConfigAttrib> InConfigAttrib;
 
-  for(int i = 0; i < AvConfigAttrib.size(); i++)
-  {
-    AvConfigAttrib[i].type = VAConfigAttribType(i);
-    
-  }
+  AvConfigAttrib[0].type = VAConfigAttribRTFormat;
+  AvConfigAttrib[1].type = VAConfigAttribRateControl;
 
   vaGetConfigAttributes(MainDisplay, Profile, EntryPoint, AvConfigAttrib.data(), AvConfigAttrib.size());
 
@@ -224,15 +267,6 @@ int main()
     }
   }
 
-// cleanup config attributes. (remove unsupported)
-  for(uint32_t i = 0; i < AvConfigAttrib.size(); i++)
-  {
-    if(AvConfigAttrib[i].value == VA_ATTRIB_NOT_SUPPORTED)
-    {
-      AvConfigAttrib.erase(AvConfigAttrib.begin() + i);
-    }
-  }
-
 // get render target format
   if(AvConfigAttrib[VAConfigAttribRTFormat].value & VA_RT_FORMAT_YUV420)
   {
@@ -240,26 +274,27 @@ int main()
   }
   else
   {
-    throw std::runtime_error("Failed, RGBP is not a supported Format for this profile/Entrypoint combo.");
+    throw std::runtime_error("Failed, YUV420 is not a supported Format for this profile/Entrypoint combo.");
   }
 
 // set the rate control method
-  if(AvConfigAttrib[VAConfigAttribRateControl].value != VA_ATTRIB_NOT_SUPPORTED)
-  {
-    int RateCtrl = AvConfigAttrib[VAConfigAttribRateControl].value;
+  uint32_t RateCtrl = AvConfigAttrib[VAConfigAttribRateControl].value;
 
-    if(RateCtrl & VA_RC_VBR)
-    {
-      InConfigAttrib.push_back({VAConfigAttribRateControl, VA_RC_VBR});
-    }
-    else if(RateCtrl & VA_RC_CBR)
-    {
-      InConfigAttrib.push_back({VAConfigAttribRateControl, VA_RC_CBR});
-    }
-    else if(RateCtrl & VA_RC_CQP)
-    {
-      InConfigAttrib.push_back({VAConfigAttribRateControl, VA_RC_CQP});
-    }
+  if(RateCtrl & VA_RC_VBR) // variable bit rate
+  {
+    InConfigAttrib.push_back({VAConfigAttribRateControl, VA_RC_VBR});
+  }
+  else if(RateCtrl & VA_RC_CBR) // constant bit rate
+  {
+    InConfigAttrib.push_back({VAConfigAttribRateControl, VA_RC_CBR});
+  }
+  else if(RateCtrl & VA_RC_CQP) // constant QP value. (more strict version of CBR)
+  {
+    InConfigAttrib.push_back({VAConfigAttribRateControl, VA_RC_CQP});
+  }
+  else
+  {
+    throw std::runtime_error("no supported rate control methods available");
   }
 
   if(AvConfigAttrib[VAConfigAttribEncInterlaced].value != VA_ATTRIB_NOT_SUPPORTED)
@@ -272,39 +307,135 @@ int main()
     throw std::runtime_error("Failed to create Encoder config with error " + std::to_string(Res));
   }
 
-  std::vector<VASurfaceID> Surfaces(2);
+  VASurfaceID inSurface;
+  VAImage inImage;
 
-  if((Res = vaCreateSurfaces(MainDisplay, VA_RT_FORMAT_YUV420, Width, Height, Surfaces.data(), Surfaces.size(), NULL, 0)) != VA_STATUS_SUCCESS)
+  VABufferID outBuffer;
+
+  if((Res = vaCreateSurfaces(MainDisplay, VA_RT_FORMAT_YUV420, Width, Height, &inSurface, 1, NULL, 0)) != VA_STATUS_SUCCESS)
   {
     throw std::runtime_error("Failed to create Surfaces with error " + std::to_string(Res));
   }
 
-  if((Res = vaCreateContext(MainDisplay, ConfId, Width, Height, VA_PROGRESSIVE, Surfaces.data(), Surfaces.size(), &EncContext)) != VA_STATUS_SUCCESS)
+  if((Res = vaCreateContext(MainDisplay, ConfId, Width, Height, VA_PROGRESSIVE, &inSurface, 1, &EncContext)) != VA_STATUS_SUCCESS)
   {
     throw std::runtime_error("Failed to create encoder context with error " + std::to_string(Res));
   }
 
+  if((Res = vaCreateBuffer(MainDisplay, EncContext, VABufferType::VAEncCodedBufferType, Width*Height, 1, NULL, &outBuffer) != VA_STATUS_SUCCESS))
+  {
+    throw std::runtime_error("Failed to create the codec output Buffer with error " + std::to_string(Res));
+  }
+
+  FillSurface(&MainDisplay, &inSurface);
+
   // this structure wraps the SPS sequence parameter set. It's a small object that feeds the AVC Encoder information about input and output, as well as Algo info as well.
   VAEncSequenceParameterBufferH264 SequenceParams;
-  // Baseline Profile level 3.0 :  30
-  // Main Profile Level 4.0 :      40
-  // High Profile Level 4.1 :      41
-  SequenceParams.level_idc = (Profile == VAProfileH264Main) ? 40 : (Profile == VAProfileH264High) ? 41 : 0;
-  SequenceParams.picture_width_in_mbs = (Width + 15) / 16;
-  SequenceParams.picture_height_in_mbs = (Height + 15) / 16;
-  SequenceParams.max_num_ref_frames = 4;
+  VABufferID SeqBuffer;
 
-  SequenceParams.bits_per_second = BitRate;
+  // this structure wraps the H.264 PPS picture parameter set.
+  VAEncPictureParameterBufferH264 PictureParams;
+  VABufferID PicBuffer;
 
+  // this structure wraps the H.264 Slice parameter set.
   VAEncSliceParameterBufferH264 SliceParams;
+  VABufferID SliceBuffer;
 
-  if((Res = vaCreateBuffer(MainDisplay, EncContext, VAEncSequenceParameterBufferType, sizeof(SequenceParams), 1, &SequenceParams, &SeqPBuffer)) != VA_STATUS_SUCCESS)
+  uint32_t FrameIndex = 0;
+
+  for(uint32_t i = 0; i < 20; i++)
   {
-    throw std::runtime_error("Failed to create sequence parameter buffer with error " + std::to_string(Res));
+    // Baseline Profile level 3.0 :  30
+    // Main Profile Level 4.0 :      40
+    // High Profile Level 4.1 :      41
+    SequenceParams.level_idc = (Profile == VAProfileH264Main) ? PROFILE_IDC_MAIN: (Profile == VAProfileH264High) ? PROFILE_IDC_HIGH : 0; // check h.264 wiki though, this might be wrong
+
+    SequenceParams.picture_width_in_mbs = (Width + 15) / 16;
+    SequenceParams.picture_height_in_mbs = (Height + 15) / 16;
+
+    SequenceParams.seq_parameter_set_id = 0;
+    SequenceParams.intra_period = 30;
+    SequenceParams.intra_idr_period = 30;
+    SequenceParams.max_num_ref_frames = 4;
+    SequenceParams.ip_period = 1;
+    SequenceParams.max_num_ref_frames = 4;
+    SequenceParams.seq_fields.bits.frame_mbs_only_flag = 1;
+    SequenceParams.seq_fields.bits.chroma_format_idc = 1;
+    SequenceParams.bits_per_second = BitRate;
+
+    if((Res = vaCreateBuffer(MainDisplay, EncContext, VAEncSequenceParameterBufferType, sizeof(SequenceParams), 1, &SequenceParams, &SeqBuffer)) != VA_STATUS_SUCCESS)
+    {
+      throw std::runtime_error("Failed to create sequence parameter buffer with error " + std::to_string(Res));
+    }
+
+    PictureParams.CurrPic.picture_id = inSurface;
+    PictureParams.CurrPic.frame_idx = FrameIndex;
+    PictureParams.CurrPic.TopFieldOrderCnt = 0;
+    PictureParams.CurrPic.BottomFieldOrderCnt = 0;
+    PictureParams.coded_buf = outBuffer;
+    PictureParams.frame_num = i;
+    PictureParams.ReferenceFrames[0].picture_id = VA_INVALID_SURFACE;
+    PictureParams.ReferenceFrames[1].picture_id = VA_INVALID_SURFACE;
+    PictureParams.ReferenceFrames[2].picture_id = VA_INVALID_SURFACE;
+    if((Res = vaCreateBuffer(MainDisplay, EncContext, VAEncPictureParameterBufferType, sizeof(PictureParams), 1, &PictureParams, &PicBuffer)) != VA_STATUS_SUCCESS)
+    {
+      throw std::runtime_error("Failed to create Picture parameter buffer with error: " + std::to_string(Res));
+    }
+
+    SliceParams.slice_qp_delta = 0;
+    SliceParams.slice_type = VASliceParameterBufferType;
+    if((Res = vaCreateBuffer(MainDisplay, EncContext, VAEncPictureParameterBufferType, sizeof(SliceParams), 1, &PictureParams, &SliceBuffer)) != VA_STATUS_SUCCESS)
+    {
+      throw std::runtime_error("Failed to create Slice Parameter buffer with error: " + std::to_string(Res));
+    }
+
+    vaDeriveImage(MainDisplay, inSurface, &inImage);
+    uint8_t* yPlane;
+    uint8_t* uPlane;
+    uint8_t* vPlane; // YUV because we are using VA_RT_FORMAT_YUV420
+    void* ImgBuffer;
+
+    vaMapBuffer(MainDisplay, inImage.buf, &ImgBuffer);
+
+    yPlane = (uint8_t*)ImgBuffer + inImage.offsets[0];
+    uPlane = (uint8_t*)ImgBuffer + inImage.offsets[1];
+    vPlane = uPlane + 1;
+
+    /* Write to buffer */
+
+    vaUnmapBuffer(MainDisplay, inImage.buf);
+
+    vaBeginPicture(MainDisplay, EncContext, inSurface);
+    vaRenderPicture(MainDisplay, EncContext, &SeqBuffer, 1);
+    vaRenderPicture(MainDisplay, EncContext, &PicBuffer, 1);
+    vaRenderPicture(MainDisplay, EncContext, &SliceBuffer, 1);
+    vaEndPicture(MainDisplay, EncContext);
+
+    //vaSyncSurface(MainDisplay, inSurface);
+
+    //VACodedBufferSegment* CodedData;
+
+    //if((Res = vaMapBuffer(MainDisplay, outBuffer, (void**)&CodedData)) != VA_STATUS_SUCCESS)
+    //{
+    //  throw std::runtime_error("Failed to map output buffer with error " + std::to_string(Res));
+    //}
+
+    //// we can also use uchar
+    //uint8_t* CodedMemory = (uint8_t*)CodedData->buf;
+
+    //fwrite(CodedMemory, CodedData->size, 1, outFile);
+
+    //if((Res = vaUnmapBuffer(MainDisplay, outBuffer)) != VA_STATUS_SUCCESS)
+    //{
+    //  throw std::runtime_error("Failed to unmap output buffer with errror " + std::to_string(Res));
+    //}
+
+    //FrameIndex++;
   }
 
   std::cout << "Successful run complete\n";
 
+  vaDestroyImage(MainDisplay, inImage.image_id);
   vaDestroyContext(MainDisplay, EncContext);
   vaDestroyConfig(MainDisplay, ConfId);
   vaTerminate(MainDisplay);

@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/mnt/sda3/Repos/enc/VAAPI/build"
+			"value" : "/run/media/LinuxGames/Repos/enc/VAAPI/build"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -559,7 +559,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/mnt/sda3/Repos/enc/VAAPI/build/CMakeFiles/pkgRedirects"
+			"value" : "/run/media/LinuxGames/Repos/enc/VAAPI/build/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -619,7 +619,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/mnt/sda3/Repos/enc/VAAPI"
+			"value" : "/run/media/LinuxGames/Repos/enc/VAAPI"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1167,7 +1167,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/mnt/sda3/Repos/enc/VAAPI/build"
+			"value" : "/run/media/LinuxGames/Repos/enc/VAAPI/build"
 		},
 		{
 			"name" : "vaEnc_IS_TOP_LEVEL",
@@ -1191,7 +1191,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/mnt/sda3/Repos/enc/VAAPI"
+			"value" : "/run/media/LinuxGames/Repos/enc/VAAPI"
 		}
 	],
 	"kind" : "cache",
