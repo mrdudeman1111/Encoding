@@ -2,6 +2,8 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <cstring>
+
 
 #include <stdexcept>
 #include <iomanip>
@@ -179,10 +181,64 @@ std::string EPString(int Var)
   return "Error";
 }
 
+// Function to convert RGB image data to YUV 420 format
+void RGBtoYUV(const uint8_t* rgbData, int width, int height, std::vector<unsigned char>& yData, std::vector<unsigned char>& uData, std::vector<unsigned char>& vData)
+{
+  // Calculate the size of the Y, U, and V components
+  int ySize = width * height;
+  int uvSize = ySize / 4;
+
+  // Resize the output vectors to hold the converted data
+  yData.resize(ySize);
+  uData.resize(uvSize);
+  vData.resize(uvSize);
+
+  // Convert RGB to YUV
+  for (int i = 0; i < height; i++)
+  {
+    for (int j = 0; j < width; j++)
+    {
+      int rgbIndex = i * width * 3 + j * 3;
+      int yIndex = i * width + j;
+
+      unsigned char r = rgbData[rgbIndex];
+      unsigned char g = rgbData[rgbIndex + 1];
+      unsigned char b = rgbData[rgbIndex + 2];
+
+      // Normalize RGB values to 0-1 range
+      double rn = static_cast<double>(r) / 255.0;
+      double gn = static_cast<double>(g) / 255.0;
+      double bn = static_cast<double>(b) / 255.0;
+
+      // Convert RGB to YUV
+      double y = 0.299 * rn + 0.587 * gn + 0.114 * bn;
+      double u = 0.492 * (bn - y);
+      double v = 0.877 * (rn - y);
+
+      // Save Y component
+      yData[yIndex] = static_cast<unsigned char>(y * 255.0);
+
+      // Save U and V components (downsampled)
+      if (i % 2 == 0 && j % 2 == 0)
+      {
+        int uvIndex = (i / 2) * (width / 2) + (j / 2);
+        uData[uvIndex] = static_cast<unsigned char>((u + 0.5) * 255.0);
+        vData[uvIndex] = static_cast<unsigned char>((v + 0.5) * 255.0);
+      }
+    }
+  }
+}
+
 void FillSurface(VADisplay* Display, VASurfaceID* Surface)
 {
-  int Width, Height, Channels;
-  stbi_load("input.jpg", &Width, &Height, &Channels, STBI_rgb);
+  int stbHeight, stbWidth, Channels;
+  uint8_t* RGB = stbi_load("input.jpg", &stbWidth, &stbHeight, &Channels, STBI_rgb);
+
+  std::vector<unsigned char> yPlane;
+  std::vector<unsigned char> uPlane;
+  std::vector<unsigned char> vPlane;
+
+  RGBtoYUV(RGB, Width, Height, yPlane, uPlane, vPlane);
 
   VAImage DstImage;
 
@@ -191,8 +247,16 @@ void FillSurface(VADisplay* Display, VASurfaceID* Surface)
   void* SurfaceMemory;
   vaMapBuffer(*Display, DstImage.buf, &SurfaceMemory);
 
-  void* Mem;
-  vaMapBuffer(*Display, *Surface, &Mem);
+  unsigned char* DstMem = (unsigned char*)SurfaceMemory;
+
+  unsigned char *DstY, *DstU, *DstV;
+  DstY = DstMem + DstImage.offsets[0];
+  DstU = DstMem + DstImage.offsets[1];
+  DstV = DstMem + DstImage.offsets[2];
+
+  memcpy(DstY, yPlane.data(), (Width*Height));
+  memcpy(DstU, uPlane.data(), (Width*Height)/4);
+  memcpy(DstV, vPlane.data(), (Width*Height)/4);
 }
 
 int main()
@@ -342,6 +406,8 @@ int main()
   VABufferID SliceBuffer;
 
   uint32_t FrameIndex = 0;
+
+  FillSurface(&MainDisplay, &inSurface);
 
   for(uint32_t i = 0; i < 20; i++)
   {

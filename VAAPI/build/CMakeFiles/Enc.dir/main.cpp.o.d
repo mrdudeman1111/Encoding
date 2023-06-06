@@ -143,8 +143,9 @@ CMakeFiles/Enc.dir/main.cpp.o: \
  /usr/include/c++/13.1.1/bits/stl_uninitialized.h \
  /usr/include/c++/13.1.1/bits/stl_vector.h \
  /usr/include/c++/13.1.1/bits/stl_bvector.h \
- /usr/include/c++/13.1.1/bits/vector.tcc /usr/include/c++/13.1.1/iomanip \
- /usr/include/c++/13.1.1/locale \
+ /usr/include/c++/13.1.1/bits/vector.tcc /usr/include/c++/13.1.1/cstring \
+ /usr/include/string.h /usr/include/strings.h \
+ /usr/include/c++/13.1.1/iomanip /usr/include/c++/13.1.1/locale \
  /usr/include/c++/13.1.1/bits/locale_facets_nonio.h \
  /usr/include/c++/13.1.1/ctime \
  /usr/include/c++/13.1.1/x86_64-pc-linux-gnu/bits/time_members.h \
@@ -159,18 +160,49 @@ CMakeFiles/Enc.dir/main.cpp.o: \
  /usr/include/bits/types/struct_iovec.h /usr/include/linux/falloc.h \
  /usr/include/bits/stat.h /usr/include/bits/struct_stat.h \
  /usr/include/dlfcn.h /usr/include/bits/dlfcn.h \
- /usr/include/bits/dl_find_object.h /usr/include/va/va.h \
+ /usr/include/bits/dl_find_object.h /usr/include/stb/stb_image.h \
+ /usr/include/c++/13.1.1/stdlib.h \
+ /usr/lib/gcc/x86_64-pc-linux-gnu/13.1.1/include/limits.h \
+ /usr/lib/gcc/x86_64-pc-linux-gnu/13.1.1/include/syslimits.h \
+ /usr/include/limits.h /usr/include/bits/posix1_lim.h \
+ /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
+ /usr/include/bits/posix2_lim.h /usr/include/bits/xopen_lim.h \
+ /usr/include/bits/uio_lim.h /usr/include/c++/13.1.1/math.h \
+ /usr/include/c++/13.1.1/cmath /usr/include/math.h \
+ /usr/include/bits/math-vector.h /usr/include/bits/libm-simd-decl-stubs.h \
+ /usr/include/bits/flt-eval-method.h /usr/include/bits/fp-logb.h \
+ /usr/include/bits/fp-fast.h \
+ /usr/include/bits/mathcalls-helper-functions.h \
+ /usr/include/bits/mathcalls.h /usr/include/bits/mathcalls-narrow.h \
+ /usr/include/bits/iscanonical.h /usr/include/c++/13.1.1/bits/specfun.h \
+ /usr/include/c++/13.1.1/limits /usr/include/c++/13.1.1/tr1/gamma.tcc \
+ /usr/include/c++/13.1.1/tr1/special_function_util.h \
+ /usr/include/c++/13.1.1/tr1/bessel_function.tcc \
+ /usr/include/c++/13.1.1/tr1/beta_function.tcc \
+ /usr/include/c++/13.1.1/tr1/ell_integral.tcc \
+ /usr/include/c++/13.1.1/tr1/exp_integral.tcc \
+ /usr/include/c++/13.1.1/tr1/hypergeometric.tcc \
+ /usr/include/c++/13.1.1/tr1/legendre_function.tcc \
+ /usr/include/c++/13.1.1/tr1/modified_bessel_func.tcc \
+ /usr/include/c++/13.1.1/tr1/poly_hermite.tcc \
+ /usr/include/c++/13.1.1/tr1/poly_laguerre.tcc \
+ /usr/include/c++/13.1.1/tr1/riemann_zeta.tcc /usr/include/assert.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/13.1.1/include/stdint.h \
  /usr/include/stdint.h /usr/include/bits/stdint-uintn.h \
- /usr/include/va/va_version.h /usr/include/va/va_dec_hevc.h \
- /usr/include/va/va_dec_jpeg.h /usr/include/va/va_dec_vp8.h \
- /usr/include/va/va_dec_vp9.h /usr/include/va/va_dec_av1.h \
- /usr/include/va/va_enc_hevc.h /usr/include/va/va_fei_hevc.h \
- /usr/include/va/va_fei.h /usr/include/va/va_enc_h264.h \
- /usr/include/va/va_enc_jpeg.h /usr/include/va/va_enc_mpeg2.h \
- /usr/include/va/va_enc_vp8.h /usr/include/va/va_enc_vp9.h \
- /usr/include/va/va_enc_av1.h /usr/include/va/va_fei.h \
- /usr/include/va/va_fei_h264.h /usr/include/va/va_vpp.h \
- /usr/include/va/va_prot.h /usr/include/va/va_drm.h \
- /usr/include/va/va_x11.h /usr/include/X11/Xlib.h /usr/include/X11/X.h \
+ /usr/lib/gcc/x86_64-pc-linux-gnu/13.1.1/include/emmintrin.h \
+ /usr/lib/gcc/x86_64-pc-linux-gnu/13.1.1/include/xmmintrin.h \
+ /usr/lib/gcc/x86_64-pc-linux-gnu/13.1.1/include/mmintrin.h \
+ /usr/lib/gcc/x86_64-pc-linux-gnu/13.1.1/include/mm_malloc.h \
+ /usr/include/va/va.h /usr/include/va/va_version.h \
+ /usr/include/va/va_dec_hevc.h /usr/include/va/va_dec_jpeg.h \
+ /usr/include/va/va_dec_vp8.h /usr/include/va/va_dec_vp9.h \
+ /usr/include/va/va_dec_av1.h /usr/include/va/va_enc_hevc.h \
+ /usr/include/va/va_fei_hevc.h /usr/include/va/va_fei.h \
+ /usr/include/va/va_enc_h264.h /usr/include/va/va_enc_jpeg.h \
+ /usr/include/va/va_enc_mpeg2.h /usr/include/va/va_enc_vp8.h \
+ /usr/include/va/va_enc_vp9.h /usr/include/va/va_enc_av1.h \
+ /usr/include/va/va_fei.h /usr/include/va/va_fei_h264.h \
+ /usr/include/va/va_vpp.h /usr/include/va/va_prot.h \
+ /usr/include/va/va_drm.h /usr/include/va/va_x11.h \
+ /usr/include/X11/Xlib.h /usr/include/X11/X.h \
  /usr/include/X11/Xfuncproto.h /usr/include/X11/Xosdefs.h
