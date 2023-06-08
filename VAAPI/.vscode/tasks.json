@@ -8,12 +8,9 @@
 			"targets": [
 				"all"
 			],
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			},
+			"group": "build",
 			"problemMatcher": [],
 			"detail": "CMake template build task"
-		}
+		},
 	]
 }

@@ -1,14 +1,14 @@
 [
 {
-  "directory": "/run/media/LinuxGames/Repos/enc/VAAPI/build",
-  "command": "/usr/bin/g++   -g -o CMakeFiles/Enc.dir/main.cpp.o -c /run/media/LinuxGames/Repos/enc/VAAPI/main.cpp",
-  "file": "/run/media/LinuxGames/Repos/enc/VAAPI/main.cpp",
+  "directory": "/run/media/ethanw/LinuxGames/Repos/enc/VAAPI/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/Enc.dir/main.cpp.o -c /run/media/ethanw/LinuxGames/Repos/enc/VAAPI/main.cpp",
+  "file": "/run/media/ethanw/LinuxGames/Repos/enc/VAAPI/main.cpp",
   "output": "CMakeFiles/Enc.dir/main.cpp.o"
 },
 {
-  "directory": "/run/media/LinuxGames/Repos/enc/VAAPI/build",
-  "command": "/usr/bin/g++   -g -o CMakeFiles/Query.dir/Query.cpp.o -c /run/media/LinuxGames/Repos/enc/VAAPI/Query.cpp",
-  "file": "/run/media/LinuxGames/Repos/enc/VAAPI/Query.cpp",
+  "directory": "/run/media/ethanw/LinuxGames/Repos/enc/VAAPI/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/Query.dir/Query.cpp.o -c /run/media/ethanw/LinuxGames/Repos/enc/VAAPI/Query.cpp",
+  "file": "/run/media/ethanw/LinuxGames/Repos/enc/VAAPI/Query.cpp",
   "output": "CMakeFiles/Query.dir/Query.cpp.o"
 }
 ]

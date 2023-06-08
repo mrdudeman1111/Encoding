@@ -58,8 +58,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/run/media/LinuxGames/Repos/enc/VAAPI/build",
-		"source" : "/run/media/LinuxGames/Repos/enc/VAAPI"
+		"build" : "/run/media/ethanw/LinuxGames/Repos/enc/VAAPI/build",
+		"source" : "/run/media/ethanw/LinuxGames/Repos/enc/VAAPI"
 	},
 	"version" : 
 	{

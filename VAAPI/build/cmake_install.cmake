@@ -1,4 +1,4 @@
-# Install script for directory: /run/media/LinuxGames/Repos/enc/VAAPI
+# Install script for directory: /run/media/ethanw/LinuxGames/Repos/enc/VAAPI
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/run/media/LinuxGames/Repos/enc/VAAPI/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/run/media/ethanw/LinuxGames/Repos/enc/VAAPI/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

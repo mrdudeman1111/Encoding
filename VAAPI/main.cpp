@@ -23,6 +23,7 @@
 int Width = 1920;
 int Height = 1080;
 int BitRate = 50000000;
+int FrameRate = 5;
 FILE* outFile;
 
 #define NAL_REF_IDC_NONE        0
@@ -229,6 +230,91 @@ void RGBtoYUV(const uint8_t* rgbData, int width, int height, std::vector<unsigne
   }
 }
 
+/* The IntraPeriod is the number of frames per "key frame" (it's a basis frame used for B and P frames) */
+void RenderSequence(VAEncSequenceParameterBufferH264& SeqParams, uint32_t IntraPeriod)
+{
+  VABufferID SeqParams_buf, rc_param_buf, misc_param_tmpbuf, render_id[2];
+  VAStatus va_status;
+  VAEncMiscParameterBuffer *misc_param, *misc_param_tmp;
+  VAEncMiscParameterRateControl *misc_rate_ctrl;
+
+  SeqParams.level_idc = 41; // check ITU-T AVC spec, under A.3.3.2 table A-4 for the High Profile Levels. (We ignore the decimals)
+  SeqParams.picture_width_in_mbs = (Width + 15) / 16;
+  SeqParams.picture_height_in_mbs = (Width + 15) / 16;
+  SeqParams.bits_per_second = BitRate;
+
+  SeqParams.intra_period = IntraPeriod;
+  SeqParams.intra_idr_period = FrameRate * 60; // I chose this value per the advice of https://software-dl.ti.com/jacinto7/esd/processor-sdk-rtos-jacinto7/07_00_00_11/exports/docs/video_codec/docs_encoder/user_guide/rtos_docs/index.html#:~:text=IDR%20frames%20are%20a%20special,frame%20before%20the%20IDR%20frame.
+  SeqParams.ip_period = ip_period;
+
+  SeqParams.max_num_ref_frames = num_ref_frames;
+  SeqParams.seq_fields.bits.frame_mbs_only_flag = 1;
+  SeqParams.time_scale = 900;
+  SeqParams.num_units_in_tick = 15; /* Tc = num_units_in_tick / time_sacle */
+  Log2MaxPicOrderCntLsb = ceil(log2(intra_idr_period*2));
+  SeqParams.seq_fields.bits.log2_max_pic_order_cnt_lsb_minus4 = Log2MaxPicOrderCntLsb - 4;
+  if(SeqParams.seq_fields.bits.log2_max_pic_order_cnt_lsb_minus4 > 12)
+  {
+      SeqParams.seq_fields.bits.log2_max_pic_order_cnt_lsb_minus4 = 12;
+  }
+  SeqParams.seq_fields.bits.log2_max_frame_num_minus4 = Log2MaxFrameNum - 4;;
+  SeqParams.seq_fields.bits.frame_mbs_only_flag = 1;
+  SeqParams.seq_fields.bits.chroma_format_idc = 1;
+  SeqParams.seq_fields.bits.direct_8x8_inference_flag = 1;
+
+  if (frame_width != frame_width_mbaligned ||
+      frame_height != frame_height_mbaligned) {
+      SeqParams.frame_cropping_flag = 1;
+      SeqParams.frame_crop_left_offset = 0;
+      SeqParams.frame_crop_right_offset = (frame_width_mbaligned - frame_width) / 2;
+      SeqParams.frame_crop_top_offset = 0;
+      SeqParams.frame_crop_bottom_offset = (frame_height_mbaligned - frame_height) / 2;
+  }
+
+  va_status = vaCreateBuffer(va_dpy, context_id,
+                             VAEncSequenceParameterBufferType,
+                             sizeof(SeqParams), 1, &seq_param, &seq_param_buf);
+  CHECK_VASTATUS(va_status, "vaCreateBuffer");
+
+  va_status = vaCreateBuffer(va_dpy, context_id,
+                             VAEncMiscParameterBufferType,
+                             sizeof(VAEncMiscParameterBuffer) + sizeof(VAEncMiscParameterRateControl),
+                             1, NULL, &rc_param_buf);
+  CHECK_VASTATUS(va_status, "vaCreateBuffer");
+
+  vaMapBuffer(va_dpy, rc_param_buf, (void **)&misc_param);
+  misc_param->type = VAEncMiscParameterTypeRateControl;
+  misc_rate_ctrl = (VAEncMiscParameterRateControl *)misc_param->data;
+  memset(misc_rate_ctrl, 0, sizeof(*misc_rate_ctrl));
+  misc_rate_ctrl->bits_per_second = frame_bitrate;
+  misc_rate_ctrl->target_percentage = 66;
+  misc_rate_ctrl->window_size = 1000;
+  misc_rate_ctrl->initial_qp = initial_qp;
+  misc_rate_ctrl->min_qp = minimal_qp;
+  misc_rate_ctrl->basic_unit_size = 0;
+  vaUnmapBuffer(va_dpy, rc_param_buf);
+
+  render_id[0] = SeqParams_buf;
+  render_id[1] = rc_param_buf;
+
+  va_status = vaRenderPicture(va_dpy, context_id, &render_id[0], 2);
+  CHECK_VASTATUS(va_status, "vaRenderPicture");;
+
+  if (misc_priv_type != 0) {
+      va_status = vaCreateBuffer(va_dpy, context_id,
+                                 VAEncMiscParameterBufferType,
+                                 sizeof(VAEncMiscParameterBuffer),
+                                 1, NULL, &misc_param_tmpbuf);
+      CHECK_VASTATUS(va_status, "vaCreateBuffer");
+      vaMapBuffer(va_dpy, misc_param_tmpbuf, (void **)&misc_param_tmp);
+      misc_param_tmp->type = misc_priv_type;
+      misc_param_tmp->data[0] = misc_priv_value;
+      vaUnmapBuffer(va_dpy, misc_param_tmpbuf);
+
+      va_status = vaRenderPicture(va_dpy, context_id, &misc_param_tmpbuf, 1);
+  }
+}
+
 void FillSurface(VADisplay* Display, VASurfaceID* Surface)
 {
   int stbHeight, stbWidth, Channels;
@@ -419,7 +505,7 @@ int main()
     SequenceParams.picture_width_in_mbs = (Width + 15) / 16;
     SequenceParams.picture_height_in_mbs = (Height + 15) / 16;
 
-    SequenceParams.seq_parameter_set_id = 0;
+    SequenceParams.SeqParamseter_set_id = 0;
     SequenceParams.intra_period = 30;
     SequenceParams.intra_idr_period = 30;
     SequenceParams.max_num_ref_frames = 4;
@@ -455,26 +541,9 @@ int main()
       throw std::runtime_error("Failed to create Slice Parameter buffer with error: " + std::to_string(Res));
     }
 
-    vaDeriveImage(MainDisplay, inSurface, &inImage);
-    uint8_t* yPlane;
-    uint8_t* uPlane;
-    uint8_t* vPlane; // YUV because we are using VA_RT_FORMAT_YUV420
-    void* ImgBuffer;
-
-    vaMapBuffer(MainDisplay, inImage.buf, &ImgBuffer);
-
-    yPlane = (uint8_t*)ImgBuffer + inImage.offsets[0];
-    uPlane = (uint8_t*)ImgBuffer + inImage.offsets[1];
-    vPlane = uPlane + 1;
-
-    /* Write to buffer */
-
-    vaUnmapBuffer(MainDisplay, inImage.buf);
-
     vaBeginPicture(MainDisplay, EncContext, inSurface);
-    vaRenderPicture(MainDisplay, EncContext, &SeqBuffer, 1);
-    vaRenderPicture(MainDisplay, EncContext, &PicBuffer, 1);
-    vaRenderPicture(MainDisplay, EncContext, &SliceBuffer, 1);
+      RenderSequence();
+      RenderPicture();
     vaEndPicture(MainDisplay, EncContext);
 
     //vaSyncSurface(MainDisplay, inSurface);
@@ -510,4 +579,3 @@ int main()
 
   return 0;
 }
-

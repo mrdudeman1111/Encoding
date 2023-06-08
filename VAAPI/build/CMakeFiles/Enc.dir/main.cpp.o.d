@@ -1,5 +1,5 @@
 CMakeFiles/Enc.dir/main.cpp.o: \
- /run/media/LinuxGames/Repos/enc/VAAPI/main.cpp \
+ /run/media/ethanw/LinuxGames/Repos/enc/VAAPI/main.cpp \
  /usr/include/stdc-predef.h /usr/include/c++/13.1.1/iostream \
  /usr/include/c++/13.1.1/bits/requires_hosted.h \
  /usr/include/c++/13.1.1/x86_64-pc-linux-gnu/bits/c++config.h \
@@ -203,6 +203,4 @@ CMakeFiles/Enc.dir/main.cpp.o: \
  /usr/include/va/va_enc_vp9.h /usr/include/va/va_enc_av1.h \
  /usr/include/va/va_fei.h /usr/include/va/va_fei_h264.h \
  /usr/include/va/va_vpp.h /usr/include/va/va_prot.h \
- /usr/include/va/va_drm.h /usr/include/va/va_x11.h \
- /usr/include/X11/Xlib.h /usr/include/X11/X.h \
- /usr/include/X11/Xfuncproto.h /usr/include/X11/Xosdefs.h
+ /usr/include/va/va_drm.h
