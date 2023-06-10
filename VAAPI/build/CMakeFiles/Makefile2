@@ -63,7 +63,7 @@ CMAKE_BINARY_DIR = /run/media/ethanw/LinuxGames/Repos/enc/VAAPI/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/Enc.dir/all
+all: CMakeFiles/menc.dir/all
 all: CMakeFiles/Query.dir/all
 .PHONY : all
 
@@ -72,35 +72,35 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/Enc.dir/clean
+clean: CMakeFiles/menc.dir/clean
 clean: CMakeFiles/Query.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/Enc.dir
+# Target rules for target CMakeFiles/menc.dir
 
 # All Build rule for target.
-CMakeFiles/Enc.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Enc.dir/build.make CMakeFiles/Enc.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Enc.dir/build.make CMakeFiles/Enc.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/run/media/ethanw/LinuxGames/Repos/enc/VAAPI/build/CMakeFiles --progress-num=1,2 "Built target Enc"
-.PHONY : CMakeFiles/Enc.dir/all
+CMakeFiles/menc.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/menc.dir/build.make CMakeFiles/menc.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/menc.dir/build.make CMakeFiles/menc.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/run/media/ethanw/LinuxGames/Repos/enc/VAAPI/build/CMakeFiles --progress-num=3,4 "Built target menc"
+.PHONY : CMakeFiles/menc.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/Enc.dir/rule: cmake_check_build_system
+CMakeFiles/menc.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /run/media/ethanw/LinuxGames/Repos/enc/VAAPI/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Enc.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/menc.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /run/media/ethanw/LinuxGames/Repos/enc/VAAPI/build/CMakeFiles 0
-.PHONY : CMakeFiles/Enc.dir/rule
+.PHONY : CMakeFiles/menc.dir/rule
 
 # Convenience name for target.
-Enc: CMakeFiles/Enc.dir/rule
-.PHONY : Enc
+menc: CMakeFiles/menc.dir/rule
+.PHONY : menc
 
 # clean rule for target.
-CMakeFiles/Enc.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Enc.dir/build.make CMakeFiles/Enc.dir/clean
-.PHONY : CMakeFiles/Enc.dir/clean
+CMakeFiles/menc.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/menc.dir/build.make CMakeFiles/menc.dir/clean
+.PHONY : CMakeFiles/menc.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/Query.dir
@@ -109,7 +109,7 @@ CMakeFiles/Enc.dir/clean:
 CMakeFiles/Query.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Query.dir/build.make CMakeFiles/Query.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Query.dir/build.make CMakeFiles/Query.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/run/media/ethanw/LinuxGames/Repos/enc/VAAPI/build/CMakeFiles --progress-num=3,4 "Built target Query"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/run/media/ethanw/LinuxGames/Repos/enc/VAAPI/build/CMakeFiles --progress-num=1,2 "Built target Query"
 .PHONY : CMakeFiles/Query.dir/all
 
 # Build rule for subdir invocation for target.

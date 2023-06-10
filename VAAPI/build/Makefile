@@ -117,17 +117,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Enc
+# Target rules for targets named menc
 
 # Build rule for target.
-Enc: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Enc
-.PHONY : Enc
+menc: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 menc
+.PHONY : menc
 
 # fast build rule for target.
-Enc/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Enc.dir/build.make CMakeFiles/Enc.dir/build
-.PHONY : Enc/fast
+menc/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/menc.dir/build.make CMakeFiles/menc.dir/build
+.PHONY : menc/fast
 
 #=============================================================================
 # Target rules for targets named Query
@@ -166,29 +166,29 @@ Query.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Query.dir/build.make CMakeFiles/Query.dir/Query.cpp.s
 .PHONY : Query.cpp.s
 
-main.o: main.cpp.o
-.PHONY : main.o
+vaEnc.o: vaEnc.cpp.o
+.PHONY : vaEnc.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Enc.dir/build.make CMakeFiles/Enc.dir/main.cpp.o
-.PHONY : main.cpp.o
+vaEnc.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/menc.dir/build.make CMakeFiles/menc.dir/vaEnc.cpp.o
+.PHONY : vaEnc.cpp.o
 
-main.i: main.cpp.i
-.PHONY : main.i
+vaEnc.i: vaEnc.cpp.i
+.PHONY : vaEnc.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Enc.dir/build.make CMakeFiles/Enc.dir/main.cpp.i
-.PHONY : main.cpp.i
+vaEnc.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/menc.dir/build.make CMakeFiles/menc.dir/vaEnc.cpp.i
+.PHONY : vaEnc.cpp.i
 
-main.s: main.cpp.s
-.PHONY : main.s
+vaEnc.s: vaEnc.cpp.s
+.PHONY : vaEnc.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Enc.dir/build.make CMakeFiles/Enc.dir/main.cpp.s
-.PHONY : main.cpp.s
+vaEnc.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/menc.dir/build.make CMakeFiles/menc.dir/vaEnc.cpp.s
+.PHONY : vaEnc.cpp.s
 
 # Help Target
 help:
@@ -198,14 +198,14 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... Enc"
 	@echo "... Query"
+	@echo "... menc"
 	@echo "... Query.o"
 	@echo "... Query.i"
 	@echo "... Query.s"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... vaEnc.o"
+	@echo "... vaEnc.i"
+	@echo "... vaEnc.s"
 .PHONY : help
 
 

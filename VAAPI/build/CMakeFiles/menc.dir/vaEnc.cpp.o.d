@@ -1,5 +1,5 @@
-CMakeFiles/Enc.dir/main.cpp.o: \
- /run/media/ethanw/LinuxGames/Repos/enc/VAAPI/main.cpp \
+CMakeFiles/menc.dir/vaEnc.cpp.o: \
+ /run/media/ethanw/LinuxGames/Repos/enc/VAAPI/vaEnc.cpp \
  /usr/include/stdc-predef.h /usr/include/c++/13.1.1/iostream \
  /usr/include/c++/13.1.1/bits/requires_hosted.h \
  /usr/include/c++/13.1.1/x86_64-pc-linux-gnu/bits/c++config.h \
@@ -135,33 +135,16 @@ CMakeFiles/Enc.dir/main.cpp.o: \
  /usr/include/c++/13.1.1/bits/locale_facets.tcc \
  /usr/include/c++/13.1.1/bits/basic_ios.tcc \
  /usr/include/c++/13.1.1/bits/ostream.tcc /usr/include/c++/13.1.1/istream \
- /usr/include/c++/13.1.1/bits/istream.tcc /usr/include/c++/13.1.1/fstream \
- /usr/include/c++/13.1.1/bits/codecvt.h \
- /usr/include/c++/13.1.1/x86_64-pc-linux-gnu/bits/basic_file.h \
- /usr/include/c++/13.1.1/x86_64-pc-linux-gnu/bits/c++io.h \
- /usr/include/c++/13.1.1/bits/fstream.tcc /usr/include/c++/13.1.1/vector \
+ /usr/include/c++/13.1.1/bits/istream.tcc /usr/include/c++/13.1.1/vector \
  /usr/include/c++/13.1.1/bits/stl_uninitialized.h \
  /usr/include/c++/13.1.1/bits/stl_vector.h \
  /usr/include/c++/13.1.1/bits/stl_bvector.h \
- /usr/include/c++/13.1.1/bits/vector.tcc /usr/include/c++/13.1.1/cstring \
- /usr/include/string.h /usr/include/strings.h \
- /usr/include/c++/13.1.1/iomanip /usr/include/c++/13.1.1/locale \
- /usr/include/c++/13.1.1/bits/locale_facets_nonio.h \
- /usr/include/c++/13.1.1/ctime \
- /usr/include/c++/13.1.1/x86_64-pc-linux-gnu/bits/time_members.h \
- /usr/include/c++/13.1.1/x86_64-pc-linux-gnu/bits/messages_members.h \
- /usr/include/libintl.h \
- /usr/include/c++/13.1.1/bits/locale_facets_nonio.tcc \
- /usr/include/c++/13.1.1/bits/locale_conv.h \
- /usr/include/c++/13.1.1/bits/quoted_string.h \
- /usr/include/c++/13.1.1/sstream /usr/include/c++/13.1.1/bits/sstream.tcc \
- /usr/include/c++/13.1.1/bitset /usr/include/fcntl.h \
+ /usr/include/c++/13.1.1/bits/vector.tcc /usr/include/fcntl.h \
  /usr/include/bits/fcntl.h /usr/include/bits/fcntl-linux.h \
  /usr/include/bits/types/struct_iovec.h /usr/include/linux/falloc.h \
  /usr/include/bits/stat.h /usr/include/bits/struct_stat.h \
- /usr/include/dlfcn.h /usr/include/bits/dlfcn.h \
- /usr/include/bits/dl_find_object.h /usr/include/stb/stb_image.h \
- /usr/include/c++/13.1.1/stdlib.h \
+ /usr/include/stb/stb_image.h /usr/include/c++/13.1.1/stdlib.h \
+ /usr/include/string.h /usr/include/strings.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/13.1.1/include/limits.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/13.1.1/include/syslimits.h \
  /usr/include/limits.h /usr/include/bits/posix1_lim.h \
